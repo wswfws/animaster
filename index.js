@@ -114,7 +114,7 @@ function animaster() {
                 resetFadeOut(element);
             };
 
-            this.move(element, duration * 0.4, { x: 100, y: 20 });
+            this.move(element, duration * 0.4, {x: 100, y: 20});
 
             if (!needReset) {
                 setTimeout(() => {
@@ -141,6 +141,12 @@ function animaster() {
             animation.play(element, true);
             return () => {
                 animation._steps = []; // Останавливаем анимацию, очищая шаги
+            };
+        },
+        buildHandler() {
+            return (event) => {
+                const element = event.currentTarget;
+                this.play(element);
             };
         }
     };
@@ -229,4 +235,14 @@ function addListeners() {
                 .addScale(800, 1);
             customAnimation.play(block);
         });
+    const worryAnimationHandler = animaster()
+        .addMove(200, {x: 80, y: 0})
+        .addMove(200, {x: 0, y: 0})
+        .addMove(200, {x: 80, y: 0})
+        .addMove(200, {x: 0, y: 0})
+        .buildHandler();
+
+    document
+        .getElementById('worryAnimationBlock')
+        .addEventListener('click', worryAnimationHandler);
 }
