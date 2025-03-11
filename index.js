@@ -46,6 +46,15 @@ function animaster() {
             return this;
         },
 
+        addRotate(duration, degrees) {
+            this._steps.push({
+                action: 'rotate',
+                duration: duration,
+                params: [degrees]
+            });
+            return this;
+        },
+
         addFadeOut(duration) {
             this._steps.push({
                 action: 'fadeOut',
@@ -82,6 +91,11 @@ function animaster() {
                 }
             };
             runStep(0);
+        },
+
+        rotate(element, duration, degrees) {
+            element.style.transitionDuration = `${duration}ms`;
+            element.style.transform = `rotate(${degrees}deg)`;
         },
 
         fadeIn(element, duration) {
@@ -245,4 +259,14 @@ function addListeners() {
     document
         .getElementById('worryAnimationBlock')
         .addEventListener('click', worryAnimationHandler);
+
+    const rotateHandler = animaster()
+        .addRotate(500, 180)
+        .addRotate(500, 0)
+        .buildHandler();
+
+    document
+        .getElementById('rotateBlock')
+        .addEventListener('click', rotateHandler);
+
 }
