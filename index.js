@@ -47,6 +47,21 @@ function addListeners() {
             heartBeatingCancel();
             heartBeatingCancel = undefined;
         });
+
+    document.getElementById('moveSquarePlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('moveSquareBlock');
+            const customAnimation = animaster()
+                .addMove(200, {x: 40, y: 40})
+                .addScale(800, 1.3)
+                .addMove(200, {x: 80, y: 0})
+                .addScale(800, 1)
+                .addMove(200, {x: 40, y: -40})
+                .addScale(800, 0.7)
+                .addMove(200, {x: 0, y: 0})
+                .addScale(800, 1);
+            customAnimation.play(block);
+        });
 }
 
 function getTransform(translation, ratio) {
@@ -91,9 +106,15 @@ function animaster() {
         },
 
         play(element) {
-            this._steps.forEach(step => {
+            const runStep = (step_ind) => {
+                const step = this._steps[step_ind];
                 this[step.action](element, step.duration, ...step.params);
-            });
+                if (step_ind + 1 === this._steps.length) {
+                    return;
+                }
+                setTimeout(() => runStep(step_ind + 1), step.duration);
+            }
+            runStep(0);
         },
 
         fadeIn(element, duration) {
