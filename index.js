@@ -19,6 +19,12 @@ function addListeners() {
             const block = document.getElementById('scaleBlock');
             anima.scale(block, 1000, 1.25);
         });
+    document.getElementById('fadeOutPlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('fadeOutBlack');
+            anima.fadeOut(block, 5000);
+        });
+
 }
 
 function getTransform(translation, ratio) {
@@ -66,6 +72,12 @@ function animaster() {
         scale(element, duration, ratio) {
             element.style.transitionDuration = `${duration}ms`;
             element.style.transform = getTransform(null, ratio);
+        },
+
+        fadeOut(element, duration) {
+            element.style.transitionDuration = `${duration}ms`;
+            element.classList.remove('show');
+            element.classList.add('hide');
         }
     }
 }
