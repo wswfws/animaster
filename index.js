@@ -34,6 +34,11 @@ function addListeners() {
             const block = document.getElementById('showAndHideBlock');
             anima.showAndHide(block, 5000);
         });
+    document.getElementById('heartBeatingPlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('heartBeatingBlock');
+            anima.heartBeating(block);
+        });
 }
 
 function getTransform(translation, ratio) {
@@ -99,6 +104,17 @@ function animaster() {
                 this.fadeOut(element, duration * 0.6);
             }, duration * 0.4)
         },
+        heartBeating(element) {
+            const step1 = ()=>{
+                this.scale(element, 500, 1.4);
+                setTimeout(step2, 500);
+            }
+            const step2 = ()=>{
+                this.scale(element, 500, 1);
+                setTimeout(step1, 500);
+            }
+            step1();
+        }
     }
 }
 
