@@ -98,9 +98,14 @@ function animaster() {
         },
 
         play(element, cycled = false) {
+            let stop = false;
+
             const runStep = (step_ind) => {
                 if (step_ind >= this._steps.length) {
                     if (cycled) {
+                        if (stop) {
+                            return;
+                        }
                         runStep(0);
                     }
                     return;
@@ -115,6 +120,23 @@ function animaster() {
                 }
             };
             runStep(0);
+
+            return {
+                    stop: () => {
+                        stop = true;
+                    },
+                reset: () => {
+                    if (element.classList.contains('show')) {
+                        resetFadeIn(element);
+                    }
+
+                    if (element.classList.contains('hide')) {
+                        resetFadeOut(element);
+                    }
+
+                    resetMoveAndScale(element);
+                }
+            }
         },
 
         rotate(element, duration, degrees) {
@@ -176,10 +198,10 @@ function animaster() {
             const animation = animaster()
                 .addScale(500, 1.4)
                 .addScale(500, 1);
-            animation.play(element, true);
+            const res = animation.play(element, true);
             return () => {
-                animation._steps = []; // Останавливаем анимацию, очищая шаги
-            };
+                res.stop();
+            }
         },
         buildHandler() {
             return (event) => {
