@@ -6,11 +6,10 @@ function addListeners() {
             const block = document.getElementById('fadeInBlock');
             animaster().fadeIn(block, 5000);
         });
-
     document.getElementById('movePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('moveBlock');
-            animaster().move(block, 1000, {x: 100, y: 10});
+            animaster().addMove(1000, {x: 100, y: 10}).play(block);
         });
     document.getElementById('moveAndHidePlay')
         .addEventListener('click', function () {
@@ -62,7 +61,7 @@ function getTransform(translation, ratio) {
 }
 
 
-function animaster() {
+    function animaster() {
     return {
         _steps: [], // Приватное поле для хранения шагов анимации
 
