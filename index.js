@@ -1,4 +1,21 @@
 function animaster() {
+    function resetFadeIn(element) {
+        element.style.transitionDuration = null;
+        element.classList.remove('show');
+        element.classList.add('hide');
+    }
+
+    function resetFadeOut(element) {
+        element.style.transitionDuration = null;
+        element.classList.remove('hide');
+        element.classList.add('show');
+    }
+
+    function resetMoveAndScale(element) {
+        element.style.transitionDuration = null;
+        element.style.transform = null;
+    }
+
     return {
         _steps: [], // Приватное поле для хранения шагов анимации
 
@@ -90,9 +107,24 @@ function animaster() {
         },
 
         moveAndHide(element, duration) {
-            this.addMove(duration * 0.4, {x: 100, y: 20})
-                .addFadeOut(duration * 0.6)
-                .play(element);
+            let needReset = false;
+            const reset = () => {
+                needReset = true;
+                resetMoveAndScale(element);
+                resetFadeOut(element);
+            };
+
+            this.move(element, duration * 0.4, { x: 100, y: 20 });
+
+            if (!needReset) {
+                setTimeout(() => {
+                    if (!needReset) {
+                        this.fadeOut(element, duration * 0.6);
+                    }
+                }, duration * 0.4);
+            }
+
+            return reset;
         },
 
         showAndHide(element, duration) {
@@ -138,10 +170,18 @@ function addListeners() {
             const block = document.getElementById('moveBlock');
             animaster().addMove(1000, {x: 100, y: 10}).play(block);
         });
+    let moveAndHide;
+
     document.getElementById('moveAndHidePlay')
         .addEventListener('click', function () {
+            if (moveAndHide !== undefined) return
             const block = document.getElementById('moveAndHideBlock');
-            animaster().moveAndHide(block, 5000);
+            moveAndHide = animaster().moveAndHide(block, 5000);
+        });
+    document.getElementById('moveAndHideReset')
+        .addEventListener('click', function () {
+            moveAndHide();
+            moveAndHide = undefined;
         });
 
     document.getElementById('scalePlay')
