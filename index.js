@@ -4,7 +4,7 @@ function addListeners() {
     document.getElementById('fadeInPlay')
         .addEventListener('click', function () {
             const block = document.getElementById('fadeInBlock');
-            animaster().fadeIn(block, 5000);
+            animaster().addFadeIn(5000).play(block);
         });
     document.getElementById('movePlay')
         .addEventListener('click', function () {
@@ -20,7 +20,7 @@ function addListeners() {
     document.getElementById('scalePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('scaleBlock');
-            animaster().scale(block, 1000, 1.25);
+            animaster().addScale(1000, 1.25).play(block);
         });
     document.getElementById('fadeOutPlay')
         .addEventListener('click', function () {
@@ -61,7 +61,7 @@ function getTransform(translation, ratio) {
 }
 
 
-    function animaster() {
+function animaster() {
     return {
         _steps: [], // Приватное поле для хранения шагов анимации
 
@@ -69,14 +69,30 @@ function getTransform(translation, ratio) {
             this._steps.push({
                 action: 'move',
                 duration: duration,
-                params: translation
+                params: [translation]
+            });
+            return this;
+        },
+        addScale(duration, ratio) {
+            this._steps.push({
+                action: 'scale',
+                duration: duration,
+                params: [ratio]
+            });
+            return this;
+        },
+        addFadeIn(duration) {
+            this._steps.push({
+                action: 'fadeIn',
+                duration: duration,
+                params: []
             });
             return this;
         },
 
         play(element) {
             this._steps.forEach(step => {
-                this[step.action](element, step.duration, step.params);
+                this[step.action](element, step.duration, ...step.params);
             });
         },
 
@@ -108,7 +124,7 @@ function getTransform(translation, ratio) {
         },
 
         moveAndHide(element, duration) {
-            this.move(element, duration * 0.4, { x: 100, y: 20 });
+            this.move(element, duration * 0.4, {x: 100, y: 20});
             setTimeout(() => {
                 this.fadeOut(element, duration * 0.6);
             }, duration * 0.4);
