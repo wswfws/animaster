@@ -13,6 +13,11 @@ function addListeners() {
             const block = document.getElementById('moveBlock');
             anima.move(block, 1000, {x: 100, y: 10});
         });
+    document.getElementById('moveAndHidePlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('moveAndHideBlock');
+            anima.moveAndHide(block, 5000);
+        });
 
     document.getElementById('scalePlay')
         .addEventListener('click', function () {
@@ -87,7 +92,13 @@ function animaster() {
         showAndHide(element, duration) {
             this.fadeIn(element, duration / 3);
             setTimeout(() => this.fadeOut(element, duration / 3), 2 * duration / 3);
-        }
+        },
+        moveAndHide(element, duration) {
+            this.move(element, duration * 0.4, {x: 100, y: 20});
+            setTimeout(() => {
+                this.fadeOut(element, duration * 0.6);
+            }, duration * 0.4)
+        },
     }
 }
 
