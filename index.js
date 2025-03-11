@@ -20,57 +20,81 @@ function animaster() {
         _steps: [], // Приватное поле для хранения шагов анимации
 
         addMove(duration, translation) {
-            this._steps.push({
+            const a = animaster()
+            this._steps.forEach(step => {
+                a._steps.push(Object.assign(step));
+            })
+            a._steps.push({
                 action: 'move',
                 duration: duration,
                 params: [translation]
             });
-            return this;
+            return a;
         },
 
         addScale(duration, ratio) {
-            this._steps.push({
+            const a = animaster()
+            this._steps.forEach(step => {
+                a._steps.push(Object.assign(step));
+            })
+            a._steps.push({
                 action: 'scale',
                 duration: duration,
                 params: [ratio]
             });
-            return this;
+            return a;
         },
 
         addFadeIn(duration) {
-            this._steps.push({
+            const a = animaster()
+            this._steps.forEach(step => {
+                a._steps.push(Object.assign(step));
+            })
+            a._steps.push({
                 action: 'fadeIn',
                 duration: duration,
                 params: []
             });
-            return this;
+            return a;
         },
 
         addRotate(duration, degrees) {
-            this._steps.push({
+            const a = animaster()
+            this._steps.forEach(step => {
+                a._steps.push(Object.assign(step));
+            })
+            a._steps.push({
                 action: 'rotate',
                 duration: duration,
                 params: [degrees]
             });
-            return this;
+            return a;
         },
 
         addFadeOut(duration) {
-            this._steps.push({
+            const a = animaster()
+            this._steps.forEach(step => {
+                a._steps.push(Object.assign(step));
+            })
+            a._steps.push({
                 action: 'fadeOut',
                 duration: duration,
                 params: []
             });
-            return this;
+            return a;
         },
 
         addDelay(duration) {
-            this._steps.push({
+            const a = animaster()
+            this._steps.forEach(step => {
+                a._steps.push(Object.assign(step));
+            })
+            a._steps.push({
                 action: 'delay',
                 duration: duration,
                 params: []
             });
-            return this;
+            return a;
         },
 
         play(element, cycled = false) {
